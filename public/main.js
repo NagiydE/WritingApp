@@ -1,45 +1,30 @@
-var thumbUp = document.getElementsByClassName("fa-thumbs-up");
-var trash = document.getElementsByClassName("fa-trash");
+document.addEventListener('DOMContentLoaded', () => {
+  // this is to make a a temporary user ID if not already stored:
+  let temporaryUserId = localStorage.getItem('temporaryUserId');
+  if (!temporaryUserId) {
+      temporaryUserId = `tempUser_${Math.random().toString(36).substr(2, 9)}`;
+      localStorage.setItem('temporaryUserId', temporaryUserId);
+  }
 
-Array.from(thumbUp).forEach(function(element) {
-      element.addEventListener('click', function(){
-        const name = this.parentNode.parentNode.childNodes[1].innerText
-        const msg = this.parentNode.parentNode.childNodes[3].innerText
-        const thumbUp = parseFloat(this.parentNode.parentNode.childNodes[5].innerText)
-        fetch('messages', {
-          method: 'put',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-            'name': name,
-            'msg': msg,
-            'thumbUp':thumbUp
-          })
-        })
-        .then(response => {
-          if (response.ok) return response.json()
-        })
-        .then(data => {
-          console.log(data)
-          window.location.reload(true)
-        })
-      });
-});
+      // Add a listener for navigating to the gallery
+  console.log('Temporary User ID:', temporaryUserId);
+    // Add a listener for navigating to the gallery
+    const galleryButton = document.getElementById('galleryButton');
+    if (galleryButton) {
+        galleryButton.addEventListener('click', () => {
+            window.location.href = `/gallery?temporaryUserId=${temporaryUserId}`;
+        });
+    }
 
-Array.from(trash).forEach(function(element) {
-      element.addEventListener('click', function(){
-        const name = this.parentNode.parentNode.childNodes[1].innerText
-        const msg = this.parentNode.parentNode.childNodes[3].innerText
-        fetch('messages', {
-          method: 'delete',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            'name': name,
-            'msg': msg
-          })
-        }).then(function (response) {
-          window.location.reload()
-        })
-      });
+  // this adds temporaryUserId to forms so that their work is saved, but no authentication required and then navigates to the gallery.
+  const forms = document.querySelectorAll('form');
+  forms.forEach(form => {
+      if (!form.querySelector('input[name="temporaryUserId"]')) {
+          const input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = 'temporaryUserId';
+          input.value = temporaryUserId;
+          form.appendChild(input);
+      }
+  });
 });

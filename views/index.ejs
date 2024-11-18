@@ -1,40 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>21 Savage Fans</title>
-  <link rel="shortcut icon" href="favicon.ico">
-  <link rel="stylesheet" href="font-awesome.min.css">
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Writing App</title>
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <h1>21 Savage</h1>
-  <h2>Why you trappin so hard?</h2>
+  <div class="container">
+      <h1>Random Words Writing Prompt</h1>
+      <h3>Test your writing skills by using this random word generator. If you like your writing, feel free to submit it to the gallery. Press Reset Prompt to generate new words.</h3>
+    <!-- Navigation to gallery -->
+    <form action="/gallery" method="GET">
+        <button type="submit" id="galleryButton">View Gallery</button>
+    </form>
+      
+      <!-- Displays the random words -->
+      <p ><strong>Prompt:</strong> <%= prompt %></p>
 
+      <!-- Writing submission form -->
+      <form action="/save" method="POST">
+          <input type="hidden" name="promptText" value="<%= prompt %>">
+          <textarea name="writing" rows="10" cols="50" placeholder="Start writing here..." required></textarea>
+          <br>
+          <button type="submit">Submit Writing</button>
+      </form>
 
-  <h3>Messages</h3>
-  <ul class="messages">
-  <% for(var i=0; i<messages.length; i++) {%>
-    <li class="message">
-      <span><%= messages[i].name %></span>
-      <span><%= messages[i].msg %></span>
-      <span><%= messages[i].thumbUp %></span>
-      <span><i class="fa fa-thumbs-up" aria-hidden="true"></i></span>
-      <span><i class="fa fa-thumbs-down" aria-hidden="true"></i></span>
-      <span><i class="fa fa-trash" aria-hidden="true"></i></span>
-    </li>
-  <% } %>
-  </ul>
+      <!-----Reset button to generate new random words -->
+      <form action="/" method="GET">
+          <button type="submit">Reset Prompt</button>
+      </form>
 
-  <h2>Add a message</h2>
-
-  <form action="/messages" method="POST">
-    <input type="text" placeholder="name" name="name">
-    <input type="text" placeholder="message" name="msg">
-    <button type="submit">Submit</button>
-  </form>
-
-  <script src="main.js"></script>
-
+      
+  </div>
+  <script src="/main.js"></script>
 </body>
 </html>

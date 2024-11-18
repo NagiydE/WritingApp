@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Writing Gallery</title>
+    <link rel="stylesheet" href="font-awesome.min.css">
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    
+    <h1>Prompts Gallery</h1>
+    <h3><a href="/">Return Home</a></h3>
+    <ul>
+        <% prompts.forEach(prompt => { %>
+            <li class="container">
+                <p><strong>Prompt:</strong> <%= prompt.promptText %></p>
+                <p><strong>Writing:</strong> <%= prompt.writing %></p>
+                <p><strong>Likes:</strong> <%= prompt.likes %></p>
+
+                <!-- Like button -->
+                <form action="/like" method="POST">
+                    <input type="hidden" name="id" value="<%= prompt._id %>">
+                    <button type="submit">Like</button>
+                </form>
+
+                <!-- Delete button (only for user's own writing) -->
+                <% if (prompt.temporaryUserId === temporaryUserId) { %>
+                    <form action="/delete" method="POST">
+                        <input type="hidden" name="id" value="<%= prompt._id %>">
+                        <input type="hidden" name="temporaryUserId" value="<%= temporaryUserId %>">
+                        <button type="submit">Delete</button>
+                    </form>
+                <% } %>
+            </li>
+        <% }); %>
+    </ul>
+</body>
+</html>
